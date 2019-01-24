@@ -273,7 +273,7 @@ Your computer will reboot and begin the install process."
 					## Setup jamfHelper window for Failed message
 					windowType="hud"
 					Heading="Failed to install macOS..."
-					Description="If you continue to have issues, please contact your Deskside Support for assistance."
+					Description="If you continue to have issues, please contact your Desktop Support for assistance."
 					Icon="/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/AlertStopIcon.icns"
 					extras="-button1 \"OK\" -defaultButton 1"
 					waitOrGo="Go"
