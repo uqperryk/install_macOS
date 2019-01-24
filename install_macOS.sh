@@ -164,7 +164,7 @@ inform() {
 				"Installing" )
 					## Setup jamfHelper window for Installing message
 					windowType="hud"
-					Heading="Initializing macOS..."
+					Heading="Initialising macOS..."
 					Description="Your machine has been scheduled to for a macOS upgrade, please save all open work and close all applications.  This process may take some time depending on the configuration of your machine.
 Your computer will reboot and begin the upgrade process shortly."
 					Icon="${upgradeOS}/Contents/Resources/ProductPageIcon.icns"
@@ -187,7 +187,7 @@ Your computer will reboot and begin the upgrade process shortly."
 				"Download" )
 					## Setup jamfHelper window for Installing message
 					windowType="fs"
-					Heading="Initializing macOS..."
+					Heading="Initialising macOS..."
 					Description="This process may take some time depending on the configuration of the machine.
 This computer will reboot and begin the install process shortly."
 					Icon="${upgradeOS}/Contents/Resources/ProductPageIcon.icns"
