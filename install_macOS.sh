@@ -560,7 +560,7 @@ else
 	# Function downloadInstaller
 		downloadInstaller
 	# Set the package name.
-		upgradeOS="/tmp/${appName}"
+		upgradeOS="/Applications/${appName}"
 fi
 
 # This section handles if we want to create a USB.
