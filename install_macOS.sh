@@ -9,7 +9,7 @@
 #
 ###################################################################################################
 
-echo "*****  install_macOS process:  START  *****"
+echo "*****  install_macOS process:  STARTING  *****"
 
 ##################################################
 # Define Environmental Variables
@@ -19,8 +19,9 @@ echo "*****  install_macOS process:  START  *****"
 # Download Icon IDs
 	elCapitanIconID="182"
 	sierraIconID="181"
-	highSierraIconID="180"
-	mojaveIconID="183"
+	highSierraIconID="125"
+	mojaveIconID="124"
+    catalinaIconID="7841"
 # Custom Trigger used for FileVault Authenticated Reboot
 	authRestartFVTrigger="AuthenticatedRestart"
 # Custom Trigger used for Downloading Installation Media
@@ -28,6 +29,7 @@ echo "*****  install_macOS process:  START  *****"
 	sierraDownloadTrigger="macOSUpgrade_Sierra"
 	highSierraDownloadTrigger="macOSUpgrade_HighSierra"
 	mojaveDownloadTrigger="macOSUpgrade_Mojave"
+    catalinaDownloadTrigger="macOSUpgrade_Catalina"
 
 ##################################################
 # Define Variables
@@ -77,7 +79,7 @@ modernFeatures() {
 			# macOS Mojave 10.14.0+ Options:
 			# Preserve Volumes in APFS Container when using --eraseinstall
 			if [[ "${3}" == "Yes" ]]; then
-				if [[ "${macOSVersion}" == "Mojave" || "${macOSVersion}" == "10.14" ]]; then
+				if [[ "${macOSVersion}" == "Mojave" || "${macOSVersion}" == "10.14"  || "${macOSVersion}" == "Catalina" || "${macOSVersion}" == "10.15" ]]; then
 					echo "Preserve Volumes in APFS Container:  ${3}"
 					installSwitch+=("--preservecontainer")
 				else
@@ -90,7 +92,9 @@ modernFeatures() {
 			# macOS High Sierra 10.13+ option
 			# Check if device is DEP Enrolled, if it is not, stage a QuickAdd package to enroll after wiping drive and installing the new OS.
 			if [[ $(/usr/bin/profiles status -type enrollment | /usr/bin/awk -F "Enrolled via DEP: " '{print $2}' | /usr/bin/xargs) == "No" ]]; then
-				installSwitch+=("--installpackage ${packageName}")
+                #Below line commented out by PK as we don't have the QuickAdd package ready
+				#installSwitch+=("--installpackage ${packageName}")
+                echo "note: this computer is not enrolled in DEP"
 			fi
 		else
 			# jamfHelper Install Failed
@@ -408,6 +412,7 @@ Please do not remove the USB drive."
 			/usr/bin/defaults write -globalDomain IAQuitInsteadOfReboot -bool YES
 
 			echo "Calling the startosinstall binary..."
+            echo "With this commandline: startosinstall --nointeraction ${installSwitch[@]}"
 			exitOutput=$(eval '"${upgradeOS}"'/Contents/Resources/startosinstall --nointeraction ${installSwitch[@]} 2>&1)
 
 			# Grab the exit value.
@@ -513,7 +518,15 @@ shopt -s nocasematch
 
 # Set the variables based on the version that is being provided.
 case "${macOSVersion}" in
-	"Mojave" | "10.14" )
+	"Catalina" | "10.15" )
+		downloadIcon=${catalinaIconID}
+		appName="Install macOS Catalina.app"
+		downloadTrigger="${catalinaDownloadTrigger}"
+
+		# Function modernFeatures
+			modernFeatures "${convertAPFS}" "${eraseinstall}" "${preserveAPFS}"
+	;;
+    "Mojave" | "10.14" )
 		downloadIcon=${mojaveIconID}
 		appName="Install macOS Mojave.app"
 		downloadTrigger="${mojaveDownloadTrigger}"
