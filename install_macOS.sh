@@ -22,6 +22,7 @@ echo "*****  install_macOS process:  STARTING  *****"
 	highSierraIconID="125"
 	mojaveIconID="124"
     catalinaIconID="7841"
+    bigSurIconID="26250"
 # Custom Trigger used for FileVault Authenticated Reboot
 	authRestartFVTrigger="AuthenticatedRestart"
 # Custom Trigger used for Downloading Installation Media
@@ -30,6 +31,7 @@ echo "*****  install_macOS process:  STARTING  *****"
 	highSierraDownloadTrigger="macOSUpgrade_HighSierra"
 	mojaveDownloadTrigger="macOSUpgrade_Mojave"
     catalinaDownloadTrigger="macOSUpgrade_Catalina"
+    bigSurDownloadTrigger="macOSUpgrade_BigSur"
 
 ##################################################
 # Define Variables
@@ -518,7 +520,15 @@ shopt -s nocasematch
 
 # Set the variables based on the version that is being provided.
 case "${macOSVersion}" in
-	"Catalina" | "10.15" )
+	"Big Sur" | "11.x" )
+		downloadIcon=${bigSurIconID}
+		appName="Install macOS Big Sur.app"
+		downloadTrigger="${bigSurDownloadTrigger}"
+
+		# Function modernFeatures
+			modernFeatures "${convertAPFS}" "${eraseinstall}" "${preserveAPFS}"
+	;;
+    "Catalina" | "10.15" )
 		downloadIcon=${catalinaIconID}
 		appName="Install macOS Catalina.app"
 		downloadTrigger="${catalinaDownloadTrigger}"
@@ -610,3 +620,4 @@ else
 	# Function rebootProcess
 		rebootProcess
 fi
+
